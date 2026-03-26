@@ -5,10 +5,17 @@ This project is a small demo of a search system built with React, TypeScript, an
 
 **Note:** This project is a work in progress and not yet finished.
 
+
 ## Features
 
-- Debounced search input (prevents excessive filtering on every keystroke)
-- Scoring system for search results (results are ranked by relevance)
+- **Debounced search input** (prevents excessive filtering on every keystroke)
+- **Advanced fuzzy search with typo tolerance** powered by `useFilter`:
+   - Supports partial matches, case-insensitive search, and ranking by relevance.
+   - Tolerates common typing mistakes:
+      - **Transposition errors** (e.g., "gril" for "girl")
+      - **Typo errors** (missing or wrong character)
+      - **Insertion errors** (extra character added)
+   - Results are scored and sorted by how closely they match the search term.
 - Fake data generation for demonstration purposes
 - TypeScript for type safety
 - Modern React with hooks
@@ -27,13 +34,6 @@ This project is a small demo of a search system built with React, TypeScript, an
    # or
    npm run dev
    ```
-
-## Roadmap
-
-- [ ] Improve UI/UX
-- [ ] Add more advanced search options
-- [ ] Add tests
-- [ ] Polish and document all features
 
 ---
 
