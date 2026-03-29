@@ -1,8 +1,11 @@
 import { useMemo } from 'react';
 
-import type { FilterKey } from '../types/FilterKey';
+import type { User } from '../types/User';
+import type { ConfigContextType } from '../contexts/ConfigContext';
 
-type WithScore<T> = T & { searchScore?: number };
+// Context
+import { useConfig } from '../contexts/ConfigContext';
+
 
 interface regexCache {
   regex: RegExp;
@@ -23,7 +26,8 @@ function addRegexPattern (normalizedTerm: string, regexPatterns: regexCache[], i
   }
 }
 
-export default function useFilter<T>(items: T[], searchTerm: string, keys: FilterKey<T>[]): WithScore<T>[] {
+export default function useFilter(items: User[], searchTerm: string ): User[] {
+    const { config } = useConfig();
 
   const regexPatterns : regexCache[] = useMemo(() => {
     if (!searchTerm.trim()) return [];
@@ -46,18 +50,20 @@ export default function useFilter<T>(items: T[], searchTerm: string, keys: Filte
 
   return useMemo(() => {
     const normalizedTerm = searchTerm.toLowerCase().trim();
-    if (!normalizedTerm) return items as WithScore<T>[];
+    if (!normalizedTerm) return items as User[];
     return items
       .map(item => {
         let score = 0;
-        keys.forEach(key => {
-          const value = String(item[key.key]).toLowerCase();
+        Object.keys(config).forEach(key => {
+          const value = String(item[key as keyof User]).toLowerCase();
+          const configKey = config[key as keyof ConfigContextType];
+          if (!configKey?.enabled) return;
           if (value.includes(normalizedTerm)) {
-            score = score > key.weight ? score : key.weight;
+            score = score > configKey.weight ? score : configKey.weight;
           } else {
             for (const regex of regexPatterns ) {
               if (regex.regex.test(value)) {
-                let newScore = key.weight * regex.multiplier;
+                let newScore = configKey.weight * regex.multiplier;
                 score = score > newScore ? score : newScore;
                 break;
               }
@@ -68,6 +74,6 @@ export default function useFilter<T>(items: T[], searchTerm: string, keys: Filte
       })
       .filter(item => item.searchScore! > 0)
       .sort((a, b) => b.searchScore! - a.searchScore!);
-  }, [items, searchTerm, keys]);
+  }, [items, searchTerm, config]);
 
 }

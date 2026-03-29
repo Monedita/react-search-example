@@ -27,6 +27,21 @@ body {
   background: #000;
 }
 
+img {
+	-webkit-user-drag: none;
+	user-drag: none;
+	-webkit-user-select: none;
+	user-select: none;
+	pointer-events: auto;
+}
+ a {
+	 -webkit-user-drag: none;
+	 user-drag: none;
+	 -webkit-user-select: none;
+	 user-select: none;
+	 pointer-events: auto;
+ }
+
 .animate-fade-in {
 	animation: fade-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
