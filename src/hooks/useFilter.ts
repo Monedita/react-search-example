@@ -19,7 +19,7 @@ export default function useFilter<T>(items: T[], searchTerm: string, keys: Filte
       patterns.push({ regex: new RegExp(normalizedTerm, 'i'), multiplier: 1 });
     } catch (e) {
     }
-    //transposition regex generation
+    //transposition
     for (let i = 0; i < normalizedTerm.length - 1; i++) {
       try {
         patterns.push(
@@ -33,7 +33,7 @@ export default function useFilter<T>(items: T[], searchTerm: string, keys: Filte
       } catch (e) {
       }
     }
-    //typo regex generation
+    //typo
     for (let i = 0; i < normalizedTerm.length; i++) {
       try {
         patterns.push(
@@ -42,6 +42,20 @@ export default function useFilter<T>(items: T[], searchTerm: string, keys: Filte
               `${normalizedTerm.slice(0, i)}.${normalizedTerm.slice(i + 1)}`, 'i'
             ),
             multiplier: 0.6
+          }
+        );
+      } catch (e) {
+      }
+    }
+    // Missing character
+    for (let i = 0; i < normalizedTerm.length - 1; i++) {
+      try {
+        patterns.push(
+          {
+            regex: new RegExp(
+              `${normalizedTerm.slice(0, i)}.${normalizedTerm.slice(i)}`, 'i'
+            ),
+            multiplier: 0.5
           }
         );
       } catch (e) {
@@ -73,11 +87,12 @@ export default function useFilter<T>(items: T[], searchTerm: string, keys: Filte
         keys.forEach(key => {
           const value = String(item[key.key]).toLowerCase();
           if (value.includes(normalizedTerm)) {
-            score += key.weight;
+            score = score > key.weight ? score : key.weight;
           } else {
             for (const regex of regexs) {
               if (regex.regex.test(value)) {
-                score += key.weight * regex.multiplier;
+                let newScore = key.weight * regex.multiplier;
+                score = score > newScore ? score : newScore;
                 break;
               }
             }
