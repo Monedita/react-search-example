@@ -10,7 +10,7 @@ interface CircularLoadingBarProps {
 export default function CircularLoadingBar({
   max,
   value,
-  size = 64,
+  size = 72,
   strokeWidth = 6,
   color = '#3b82f6',
   bgColor = '#e5e7eb',

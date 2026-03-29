@@ -11,7 +11,7 @@ export default function SearchInput({ setSearchTerm }: { setSearchTerm: (term: s
             placeholder="Search users..."
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
-            className="flex-none w-full outline-none border rounded-full py-2 px-4 mb-4"
+            className="flex-none w-full outline-none border rounded-full py-2 px-4 mb-4 animate-fade-in"
         />
     );
 }
