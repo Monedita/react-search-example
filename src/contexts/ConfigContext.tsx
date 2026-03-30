@@ -18,8 +18,6 @@ interface ConfigContextValue {
 
 const defaultConfig: ConfigContextType = {
     fullName: { enabled: true, weight: 5 },
-    firstName: { enabled: false, weight: 1 },
-    lastName: { enabled: false, weight: 1 },
     id: { enabled: true, weight: 4 },
     email: { enabled: true, weight: 3 },
     img: { enabled: false, weight: 1 },

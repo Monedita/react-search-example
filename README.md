@@ -1,5 +1,5 @@
 
-# React Search Example
+#  React Search Example [Live Demo](https://search.merki.es/)
 
 This project is a small demo of a search system built with React, TypeScript, and Vite. It features a debounced search input and a scoring-based filtering system for results.
 

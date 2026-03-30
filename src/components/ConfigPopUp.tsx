@@ -20,15 +20,34 @@ export default function ConfigPopUp({ isOpen, onClose }: { isOpen: boolean; onCl
             onClick={handleBackdropClick}
         >
             <dialog open={isOpen} className="flex-none cursor-default mx-auto max-w-96 bg-white text-black rounded-lg shadow-lg p-4 animate-fade-in">
-                <h2 className="text-lg font-semibold mb-2">Configuration</h2>
-                <p className="text-sm mb-4">This is a placeholder for the configuration popup. You can add settings here to customize the search behavior.</p>
-                {Object.keys(config).map(key => {
-                    let displayKey = key as keyof ConfigContextType;
-                    return (
-                        <div key={key} className="flex items-center justify-between mb-2">
-                            <span className="capitalize">{key}</span>
-                            <div className="flex items-center gap-2">
+                <h2 className="text-lg text-center font-semibold mb-2">Search Scoring Configuration</h2>
+                <p className="text-sm mb-4">You can edit the scoring configuration to customize the search behavior.</p>
+                <div className="w-fit mx-auto flex flex-col items-end gap-2">
+                    {Object.keys(config).map(key => {
+                        let displayKey = key as keyof ConfigContextType;
+                        return (
+                            <div key={key} className="w-fit flex items-center justify-end gap-4">
+                                <span className="capitalize flex-none truncate text-right">{key}:</span>
+                                <select
+                                    className="w-10 flex-none"
+                                    value={config[displayKey]!.weight}
+                                    onChange={(e) => {
+                                        const newWeight = parseInt(e.target.value, 10);
+                                        setConfig(prevConfig => ({
+                                            ...prevConfig,
+                                            [displayKey]: {
+                                                ...prevConfig[displayKey],
+                                                weight: newWeight,
+                                            },
+                                        }));
+                                    }}
+                                >
+                                    {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(weight => (
+                                        <option key={weight} value={weight}>{weight}</option>
+                                    ))}
+                                </select>
                                 <input
+                                    className='flex-none'
                                     type="checkbox"
                                     checked={config[displayKey]!.enabled}
                                     onChange={() => {
@@ -42,9 +61,9 @@ export default function ConfigPopUp({ isOpen, onClose }: { isOpen: boolean; onCl
                                     }}
                                 />
                             </div>
-                        </div>
-                    );
-                })}
+                        );
+                    })}
+                </div>
             </dialog>
         </div>
     );
