@@ -16,7 +16,7 @@ export default function ConfigPopUp({ isOpen, onClose }: { isOpen: boolean; onCl
 
     return (
         <div
-            className="absolute inset-0 z-50 cursor-pointer flex flex-col justify-center items-center bg-black bg-opacity-50 backdrop-blur-sm"
+            className="absolute inset-0 z-50 cursor-pointer flex flex-col justify-center items-center bg-black/50 backdrop-blur-sm"
             onClick={handleBackdropClick}
         >
             <dialog open={isOpen} className="flex-none cursor-default mx-auto max-w-96 bg-white text-black rounded-lg shadow-lg p-4 animate-fade-in">
